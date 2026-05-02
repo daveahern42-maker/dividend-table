@@ -2,7 +2,7 @@
 
 Live dividend stock analysis dashboard — fed by a Google Sheet, refreshable from FMP, deployed on Vercel.
 
-**Live page:** {{VERCEL_URL}}
+**Live page:** https://dividend-table.vercel.app
 **Source data:** https://docs.google.com/spreadsheets/d/1kZqoldvudEdciv_m4jmbOgX6klykcNSf_jARm0mQA2w/edit
 
 By Dave Ahern · Dividend.School
