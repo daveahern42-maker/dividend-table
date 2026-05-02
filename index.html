@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dividend Coverage Universe — Dividend.School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fbf7f0;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-2: #3d3d3d;
+    --ink-soft: #6b6b6b;
+    --rule: #e8e0d0;
+    --rule-soft: #f0e8d8;
+    --forest: #00583a;
+    --forest-soft: #c9e0d4;
+    --copper: #b8732e;
+    --copper-soft: #f1d7b3;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65; font-feature-settings: 'kern' 1, 'liga' 1; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 56px 56px 80px; }
+  .tag { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--forest); letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border: 1px solid var(--forest); border-radius: 999px; margin-bottom: 28px; }
+  .tag::before { content: ''; width: 6px; height: 6px; background: var(--forest); border-radius: 50%; }
+  h1.title { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'wght' 500; font-size: clamp(48px, 6.5vw, 76px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 18px; color: var(--ink); max-width: 880px; }
+  h1.title em { font-style: italic; font-variation-settings: 'opsz' 144, 'wght' 400; color: var(--forest); }
+  .deck { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 24; font-size: 21px; line-height: 1.5; color: var(--ink-2); max-width: 720px; margin: 0 0 12px; }
+  .meta-row { display: flex; gap: 24px; align-items: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--rule); font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; flex-wrap: wrap; }
+  .meta-row .author { color: var(--ink); font-weight: 600; letter-spacing: 0.14em; }
+  .meta-row .dot { color: var(--copper); }
+  .meta-row a { color: var(--forest); text-decoration: none; border-bottom: 1px dotted var(--forest); }
+  .meta-row a:hover { color: var(--copper); border-bottom-color: var(--copper); }
+  .table-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 200px; margin-top: 32px; }
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 20px 60px; }
+    h1.title { font-size: clamp(36px, 9vw, 48px); }
+    .deck { font-size: 17px; }
+    .meta-row { gap: 12px; font-size: 10px; }
+    table { min-width: 720px; }
+    th, td { padding: 12px 10px; font-size: 12px; }
+    td:first-child { font-size: 14px; }
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--bg); }
+  thead tr { border-bottom: 1px solid var(--rule); }
+  th { padding: 16px 14px; text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; user-select: none; transition: color 0.15s; vertical-align: bottom; }
+  th:hover { color: var(--forest); }
+  th:first-child { text-align: left; }
+  th .arrow { color: var(--copper); margin-left: 4px; opacity: 0.3; }
+  th[data-dir] { color: var(--forest); }
+  th[data-dir] .arrow { opacity: 1; color: var(--forest); }
+  tbody tr { border-bottom: 1px solid var(--rule-soft); transition: background 0.18s; }
+  tbody tr:hover { background: rgba(0, 88, 58, 0.025); }
+  tbody tr:last-child { border-bottom: none; }
+  td { padding: 18px 14px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  td:first-child { text-align: left; font-family: 'Newsreader', serif; font-size: 17px; font-weight: 500; }
+  td .ticker { font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 11px; color: var(--copper); margin-left: 8px; letter-spacing: 0.06em; background: var(--copper-soft); padding: 2px 7px; border-radius: 3px; }
+  .sparkbar { height: 3px; background: var(--forest-soft); border-radius: 2px; margin-top: 6px; overflow: hidden; }
+  .sparkbar > span { display: block; height: 100%; background: var(--forest); border-radius: 2px; }
+  .sparkbar.neg > span { background: var(--copper); }
+  td.has-spark { padding-bottom: 14px; }
+  .state-msg { padding: 60px 24px; text-align: center; font-family: 'Newsreader', serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
+  .state-msg.error { color: var(--copper); }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--forest-soft); border-top-color: var(--forest); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .footer-note { margin-top: 24px; font-family: 'Newsreader', serif; font-size: 14px; font-style: italic; color: var(--ink-soft); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">Dividend.School · Dividend Discipline</div>
+  <h1 class="title">Dividend Coverage Universe</h1>
+  <p class="deck">The dividend stocks I track for yield, payout discipline, and dividend returns better than the S&amp;P 500.</p>
+  <div class="meta-row">
+    <span class="author">Dave Ahern</span>
+    <span class="dot">●</span>
+    <span>Dividend.School</span>
+    <span class="dot">●</span>
+    <span id="updated">Loading…</span>
+    <span class="dot">●</span>
+    <span><a href="https://docs.google.com/spreadsheets/d/1kZqoldvudEdciv_m4jmbOgX6klykcNSf_jARm0mQA2w/edit" target="_blank" rel="noopener">Source spreadsheet</a></span>
+  </div>
+  <div class="table-card">
+    <table id="tbl" style="display:none">
+      <thead>
+        <tr>
+          <th data-sort="company">Company <span class="arrow">↕</span></th>
+          <th data-sort="yield">Yield % <span class="arrow">↕</span></th>
+          <th data-sort="eps">EPS Payout % <span class="arrow">↕</span></th>
+          <th data-sort="fcf">FCF Payout % <span class="arrow">↕</span></th>
+          <th data-sort="div">Div Growth 5Y <span class="arrow">↕</span></th>
+          <th data-sort="rev">Rev Growth 5Y <span class="arrow">↕</span></th>
+          <th data-sort="eps5">EPS Growth 5Y <span class="arrow">↕</span></th>
+        </tr>
+      </thead>
+      <tbody id="tb"></tbody>
+    </table>
+    <div class="state-msg" id="state"><span class="spinner"></span>Fetching latest from Google Sheets…</div>
+  </div>
+  <p class="footer-note">Click any column to sort. Numbers refresh from the source spreadsheet on every page load.</p>
+</div>
+
+<script>
+  const SHEET_ID = "1kZqoldvudEdciv_m4jmbOgX6klykcNSf_jARm0mQA2w";
+  const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1&_=${Date.now()}`;
+  const KEYS = ['company','yield','eps','fcf','div','rev','eps5'];
+  const SORT_KEY_TO_INDEX = { company:0, yield:2, eps:3, fcf:4, div:5, rev:6, eps5:7 };
+
+  function el(t,p={}){const e=document.createElement(t);for(const[k,v] of Object.entries(p))k==='text'?e.textContent=v:k==='class'?e.className=v:e.setAttribute(k,v);return e;}
+  function fmt(n){if(n===''||n==null||isNaN(n))return '—';return Math.abs(n)<10&&n%1!==0?Number(n).toFixed(2):Number(n).toFixed(1);}
+  function parseCSV(text) {
+    const rows = []; let cur = [], field = '', inQ = false;
+    for (let i=0;i<text.length;i++) {
+      const c = text[i];
+      if (inQ) { if (c==='"'&&text[i+1]==='"') {field+='"';i++;} else if (c==='"') inQ=false; else field+=c; }
+      else { if (c==='"') inQ=true; else if (c===',') {cur.push(field);field='';} else if (c==='\n') {cur.push(field);rows.push(cur);cur=[];field='';} else if (c==='\r') {} else field+=c; }
+    }
+    if (field!==''||cur.length) {cur.push(field);rows.push(cur);}
+    return rows;
+  }
+
+  let ROWS = [], sortKey = null, sortDir = 'asc';
+
+  function getSorted() {
+    const r = [...ROWS];
+    if (sortKey) {
+      const idx = SORT_KEY_TO_INDEX[sortKey];
+      r.sort((a,b) => {
+        const va = a[idx], vb = b[idx];
+        if (typeof va === 'string') return sortDir==='asc' ? va.localeCompare(vb) : vb.localeCompare(va);
+        return sortDir==='asc' ? va-vb : vb-va;
+      });
+    }
+    return r;
+  }
+
+  function render() {
+    const tb = document.getElementById('tb'); tb.replaceChildren();
+    const sorted = getSorted();
+    const maxGrowth = Math.max(...ROWS.flatMap(r => [Math.abs(r[5])||0, Math.abs(r[6])||0, Math.abs(r[7])||0]), 1);
+    for (const r of sorted) {
+      const tr = el('tr');
+      const td0 = el('td', {'data-key':'company','data-val':r[0]});
+      td0.appendChild(document.createTextNode(r[0]));
+      td0.appendChild(el('span', {class:'ticker', text:r[1]}));
+      tr.appendChild(td0);
+      for (let i=2; i<=7; i++) {
+        const v = r[i];
+        const td = el('td', {'data-key':KEYS[i-1],'data-val':v,text:fmt(v)});
+        if (i >= 5 && !isNaN(v)) {
+          td.classList.add('has-spark');
+          const bar = el('div', {class:'sparkbar'+(v<0?' neg':'')});
+          const inner = el('span'); inner.style.width = (Math.abs(v)/maxGrowth*100)+'%';
+          bar.appendChild(inner); td.appendChild(bar);
+        }
+        tr.appendChild(td);
+      }
+      tb.appendChild(tr);
+    }
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+      const a = th.querySelector('.arrow');
+      if (th.dataset.sort === sortKey) { th.setAttribute('data-dir', sortDir); a.textContent = sortDir==='asc' ? '▲' : '▼'; }
+      else { th.removeAttribute('data-dir'); a.textContent = '↕'; }
+    });
+  }
+
+  async function load() {
+    const state = document.getElementById('state');
+    try {
+      const res = await fetch(CSV_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const parsed = parseCSV(text);
+      ROWS = parsed.slice(1)
+        .filter(r => r.length >= 8 && r[0])
+        .map(r => [r[0], r[1], parseFloat(r[2]), parseFloat(r[3]), parseFloat(r[4]), parseFloat(r[5]), parseFloat(r[6]), parseFloat(r[7])]);
+      document.getElementById('updated').textContent = 'Updated ' + new Date().toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+      state.style.display = 'none';
+      document.getElementById('tbl').style.display = '';
+      render();
+    } catch (e) {
+      state.className = 'state-msg error';
+      state.textContent = 'Could not load data from Google Sheets: ' + e.message;
+    }
+  }
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.sort;
+      if (sortKey === key) sortDir = sortDir==='asc' ? 'desc' : 'asc';
+      else { sortKey = key; sortDir = 'asc'; }
+      render();
+    });
+  });
+
+  load();
+</script>
+</body>
+</html>
