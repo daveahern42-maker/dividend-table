@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dividend Coverage Universe — Dividend.School</title>
+<title>Dividend School Universe — Dividend.School</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,14 +20,13 @@
     --copper: #b8732e;
     --copper-soft: #f1d7b3;
     --slate: #3a5a7a;
+    --slate-soft: #d4e1ed;
     --warm-gray: #7a6e5e;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--ink); font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65; font-feature-settings: 'kern' 1, 'liga' 1; }
-  .wrap { max-width: 1320px; margin: 0 auto; padding: 56px 56px 80px; }
-  .tag { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--forest); letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border: 1px solid var(--forest); border-radius: 999px; margin-bottom: 28px; }
-  .tag::before { content: ''; width: 6px; height: 6px; background: var(--forest); border-radius: 50%; }
+  .wrap { max-width: 1380px; margin: 0 auto; padding: 56px 56px 80px; }
   h1.title { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'wght' 500; font-size: clamp(48px, 6.5vw, 76px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 18px; color: var(--ink); max-width: 880px; }
   h1.title em { font-style: italic; font-variation-settings: 'opsz' 144, 'wght' 400; color: var(--forest); }
   .deck { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 24; font-size: 21px; line-height: 1.5; color: var(--ink-2); max-width: 720px; margin: 0 0 12px; }
@@ -42,14 +41,14 @@
     h1.title { font-size: clamp(36px, 9vw, 48px); }
     .deck { font-size: 17px; }
     .meta-row { gap: 12px; font-size: 10px; }
-    table { min-width: 1180px; }
+    table { min-width: 1280px; }
     th, td { padding: 12px 10px; font-size: 13px; }
     td.company-cell { font-size: 14px; }
   }
   table { width: 100%; border-collapse: collapse; }
   thead { background: var(--bg); }
   thead tr { border-bottom: 1px solid var(--rule); }
-  th { padding: 16px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; user-select: none; transition: color 0.15s; vertical-align: bottom; white-space: nowrap; }
+  th { padding: 16px 12px; text-align: center; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 10px; color: var(--ink-soft); letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; user-select: none; transition: color 0.15s; vertical-align: bottom; white-space: nowrap; }
   th:hover { color: var(--forest); }
   th.left { text-align: left; }
   th .arrow { color: var(--copper); margin-left: 4px; opacity: 0.3; }
@@ -58,23 +57,24 @@
   tbody tr { border-bottom: 1px solid var(--rule-soft); transition: background 0.18s; }
   tbody tr:hover { background: rgba(0, 88, 58, 0.025); }
   tbody tr:last-child { border-bottom: none; }
-  td { padding: 16px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; vertical-align: middle; }
+  td { padding: 16px 12px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; vertical-align: middle; }
   td.tier-cell { text-align: left; padding-right: 8px; }
+  td.strategy-cell { text-align: left; padding-right: 8px; }
   td.company-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
   td.company-cell .logo { width: 24px; height: 24px; vertical-align: middle; margin-right: 10px; border-radius: 4px; object-fit: contain; background: var(--rule-soft); }
   td.ticker-cell { text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; color: var(--copper); letter-spacing: 0.06em; white-space: nowrap; }
-  td.strategy-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 15px; font-weight: 500; color: var(--ink); text-transform: capitalize; white-space: nowrap; }
-  td.buy-below-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; color: var(--ink-2); }
+  td.current-price-cell, td.buy-below-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; color: var(--ink-2); }
   td.metric-headline { font-size: 16px; font-weight: 700; color: var(--ink); }
-  .tier-badge { display: inline-block; padding: 5px 14px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; background: var(--ink-soft); color: white; min-width: 130px; text-align: center; }
+  .pill { display: inline-block; padding: 5px 14px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; min-width: 130px; text-align: center; }
+  .tier-badge { background: var(--ink-soft); color: white; }
   .tier-badge.tier-1 { background: var(--forest); }
   .tier-badge.tier-2 { background: var(--copper); }
   .tier-badge.tier-3 { background: var(--slate); }
   .tier-badge.tier-4 { background: var(--warm-gray); }
-  .sparkbar { height: 3px; background: var(--forest-soft); border-radius: 2px; margin-top: 6px; overflow: hidden; }
-  .sparkbar > span { display: block; height: 100%; background: var(--forest); border-radius: 2px; }
-  .sparkbar.neg > span { background: var(--copper); }
-  td.has-spark { padding-bottom: 12px; }
+  .strategy-badge { background: var(--rule-soft); color: var(--ink-2); }
+  .strategy-badge.strat-1 { background: var(--forest-soft); color: var(--forest); }
+  .strategy-badge.strat-2 { background: var(--copper-soft); color: var(--copper); }
+  .strategy-badge.strat-3 { background: var(--slate-soft); color: var(--slate); }
   .state-msg { padding: 60px 24px; text-align: center; font-family: 'Newsreader', serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
   .state-msg.error { color: var(--copper); }
   .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--forest-soft); border-top-color: var(--forest); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
@@ -84,8 +84,7 @@
 </head>
 <body>
 <div class="wrap">
-  <div class="tag">Dividend.School · Dividend Discipline</div>
-  <h1 class="title">Dividend Coverage Universe</h1>
+  <h1 class="title">Dividend School Universe</h1>
   <p class="deck">Dividend selections that consistently outpace the S&amp;P 500 in yield and income growth.</p>
   <div class="meta-row">
     <span class="author">Dave Ahern</span>
@@ -104,6 +103,7 @@
           <th class="left" data-sort="ticker">Ticker <span class="arrow">↕</span></th>
           <th class="left" data-sort="tier">Tier <span class="arrow">↕</span></th>
           <th class="left" data-sort="strategy">Strategy <span class="arrow">↕</span></th>
+          <th data-sort="currentPrice">Current Price <span class="arrow">↕</span></th>
           <th data-sort="buyBelow">Buy Below <span class="arrow">↕</span></th>
           <th data-sort="yield">Yield % <span class="arrow">↕</span></th>
           <th data-sort="eps">EPS Payout % <span class="arrow">↕</span></th>
@@ -133,12 +133,20 @@
     if (tier === 'Hold') return 'tier-4';
     return '';
   }
+  function strategyClass(strat) {
+    const s = (strat || '').toLowerCase().trim();
+    if (s === 'dividend growth') return 'strat-1';
+    if (s === 'high yield') return 'strat-2';
+    if (s === 'compounders' || s === 'compounder') return 'strat-3';
+    return '';
+  }
   function logoUrl(ticker) {
     return `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
   }
-  function fmt(n) {
+  function fmtPct(n) {
     if (n === '' || n == null || isNaN(n)) return '—';
-    return Math.abs(n) < 10 && n % 1 !== 0 ? Number(n).toFixed(2) : Number(n).toFixed(1);
+    const s = Math.abs(n) < 10 && n % 1 !== 0 ? Number(n).toFixed(2) : Number(n).toFixed(1);
+    return s + '%';
   }
   function fmtCurrency(n) {
     if (n === '' || n == null || isNaN(n)) return '—';
@@ -195,7 +203,6 @@
     const tb = document.getElementById('tb');
     tb.replaceChildren();
     const sorted = getSorted();
-    const maxGrowth = Math.max(...ROWS.flatMap(r => [Math.abs(r.div)||0, Math.abs(r.rev)||0, Math.abs(r.eps5)||0]), 1);
     for (const r of sorted) {
       const tr = document.createElement('tr');
 
@@ -222,7 +229,7 @@
       if (r.tier) {
         const badge = document.createElement('span');
         const cls = tierClass(r.tier);
-        badge.className = 'tier-badge' + (cls ? ' ' + cls : '');
+        badge.className = 'pill tier-badge' + (cls ? ' ' + cls : '');
         badge.textContent = r.tier;
         tdTier.appendChild(badge);
       }
@@ -230,8 +237,19 @@
 
       const tdStrategy = document.createElement('td');
       tdStrategy.className = 'strategy-cell';
-      tdStrategy.textContent = r.strategy || '';
+      if (r.strategy) {
+        const badge = document.createElement('span');
+        const cls = strategyClass(r.strategy);
+        badge.className = 'pill strategy-badge' + (cls ? ' ' + cls : '');
+        badge.textContent = r.strategy.replace(/\b\w/g, c => c.toUpperCase());
+        tdStrategy.appendChild(badge);
+      }
       tr.appendChild(tdStrategy);
+
+      const tdCurrentPrice = document.createElement('td');
+      tdCurrentPrice.className = 'current-price-cell';
+      tdCurrentPrice.textContent = fmtCurrency(r.currentPrice);
+      tr.appendChild(tdCurrentPrice);
 
       const tdBuyBelow = document.createElement('td');
       tdBuyBelow.className = 'buy-below-cell';
@@ -239,22 +257,12 @@
       tr.appendChild(tdBuyBelow);
 
       const numericKeys = ['yield', 'eps', 'fcf', 'div', 'rev', 'eps5'];
-      const sparkbarKeys = ['div', 'rev', 'eps5'];
       const headlineKeys = ['yield', 'div'];
       for (const key of numericKeys) {
         const v = r[key];
         const td = document.createElement('td');
         if (headlineKeys.includes(key)) td.classList.add('metric-headline');
-        td.textContent = fmt(v);
-        if (sparkbarKeys.includes(key) && !isNaN(v)) {
-          td.classList.add('has-spark');
-          const bar = document.createElement('div');
-          bar.className = 'sparkbar' + (v < 0 ? ' neg' : '');
-          const inner = document.createElement('span');
-          inner.style.width = (Math.abs(v) / maxGrowth * 100) + '%';
-          bar.appendChild(inner);
-          td.appendChild(bar);
-        }
+        td.textContent = fmtPct(v);
         tr.appendChild(td);
       }
 
@@ -294,6 +302,7 @@
         ticker: findCol('ticker'),
         tier: findCol('tier'),
         strategy: findCol('strategy'),
+        currentPrice: findCol('current price'),
         buyBelow: findCol('buy below'),
         yield: findCol('yield'),
         eps: findCol('eps payout'),
@@ -303,6 +312,11 @@
         eps5: findCol('eps growth')
       };
 
+      const numFromCell = (v) => {
+        if (v == null || v === '') return NaN;
+        return parseFloat(String(v).replace(/[$,]/g, ''));
+      };
+
       ROWS = parsed.slice(1)
         .filter(r => COL.company !== -1 && r[COL.company])
         .map(r => ({
@@ -310,7 +324,8 @@
           ticker: r[COL.ticker] || '',
           tier: r[COL.tier] || '',
           strategy: r[COL.strategy] || '',
-          buyBelow: COL.buyBelow !== -1 ? parseFloat(String(r[COL.buyBelow]).replace(/[$,]/g, '')) : NaN,
+          currentPrice: COL.currentPrice !== -1 ? numFromCell(r[COL.currentPrice]) : NaN,
+          buyBelow: COL.buyBelow !== -1 ? numFromCell(r[COL.buyBelow]) : NaN,
           yield: parseFloat(r[COL.yield]),
           eps: parseFloat(r[COL.eps]),
           fcf: parseFloat(r[COL.fcf]),
