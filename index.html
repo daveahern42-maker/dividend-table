@@ -5,7 +5,7 @@
 <title>Dividend Coverage Universe — Dividend.School</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #fbf7f0;
@@ -19,13 +19,13 @@
     --forest-soft: #c9e0d4;
     --copper: #b8732e;
     --copper-soft: #f1d7b3;
-    --neutral-bg: #ede5d3;
-    --neutral-ink: #5a5a5a;
+    --slate: #3a5a7a;
+    --warm-gray: #7a6e5e;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--ink); font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65; font-feature-settings: 'kern' 1, 'liga' 1; }
-  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 56px 80px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 56px 56px 80px; }
   .tag { display: inline-flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--forest); letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 12px; border: 1px solid var(--forest); border-radius: 999px; margin-bottom: 28px; }
   .tag::before { content: ''; width: 6px; height: 6px; background: var(--forest); border-radius: 50%; }
   h1.title { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'wght' 500; font-size: clamp(48px, 6.5vw, 76px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 18px; color: var(--ink); max-width: 880px; }
@@ -42,8 +42,8 @@
     h1.title { font-size: clamp(36px, 9vw, 48px); }
     .deck { font-size: 17px; }
     .meta-row { gap: 12px; font-size: 10px; }
-    table { min-width: 1040px; }
-    th, td { padding: 12px 10px; font-size: 12px; }
+    table { min-width: 1180px; }
+    th, td { padding: 12px 10px; font-size: 13px; }
     td.company-cell { font-size: 14px; }
   }
   table { width: 100%; border-collapse: collapse; }
@@ -58,16 +58,19 @@
   tbody tr { border-bottom: 1px solid var(--rule-soft); transition: background 0.18s; }
   tbody tr:hover { background: rgba(0, 88, 58, 0.025); }
   tbody tr:last-child { border-bottom: none; }
-  td { padding: 16px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; vertical-align: middle; }
+  td { padding: 16px 12px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; vertical-align: middle; }
   td.tier-cell { text-align: left; padding-right: 8px; }
-  td.ticker-cell { text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 12px; color: var(--copper); letter-spacing: 0.06em; white-space: nowrap; }
-  td.company-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700; color: var(--ink); }
-  td.strategy-cell { text-align: left; font-family: 'Newsreader', serif; font-style: italic; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
-  .tier-badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
-  .tier-badge.tier-1 { background: var(--forest); color: white; }
-  .tier-badge.tier-2 { background: var(--copper); color: white; }
-  .tier-badge.tier-3 { background: var(--neutral-bg); color: var(--neutral-ink); }
-  .logo { width: 24px; height: 24px; vertical-align: middle; margin-right: 8px; border-radius: 4px; object-fit: contain; background: var(--rule-soft); }
+  td.company-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+  td.company-cell .logo { width: 24px; height: 24px; vertical-align: middle; margin-right: 10px; border-radius: 4px; object-fit: contain; background: var(--rule-soft); }
+  td.ticker-cell { text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; color: var(--copper); letter-spacing: 0.06em; white-space: nowrap; }
+  td.strategy-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 15px; font-weight: 500; color: var(--ink); text-transform: capitalize; white-space: nowrap; }
+  td.buy-below-cell { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; color: var(--ink-2); }
+  td.metric-headline { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .tier-badge { display: inline-block; padding: 5px 12px; border-radius: 999px; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; background: var(--ink-soft); color: white; }
+  .tier-badge.tier-1 { background: var(--forest); }
+  .tier-badge.tier-2 { background: var(--copper); }
+  .tier-badge.tier-3 { background: var(--slate); }
+  .tier-badge.tier-4 { background: var(--warm-gray); }
   .sparkbar { height: 3px; background: var(--forest-soft); border-radius: 2px; margin-top: 6px; overflow: hidden; }
   .sparkbar > span { display: block; height: 100%; background: var(--forest); border-radius: 2px; }
   .sparkbar.neg > span { background: var(--copper); }
@@ -101,6 +104,7 @@
           <th class="left" data-sort="ticker">Ticker <span class="arrow">↕</span></th>
           <th class="left" data-sort="tier">Tier <span class="arrow">↕</span></th>
           <th class="left" data-sort="strategy">Strategy <span class="arrow">↕</span></th>
+          <th data-sort="buyBelow">Buy Below <span class="arrow">↕</span></th>
           <th data-sort="yield">Yield % <span class="arrow">↕</span></th>
           <th data-sort="eps">EPS Payout % <span class="arrow">↕</span></th>
           <th data-sort="fcf">FCF Payout % <span class="arrow">↕</span></th>
@@ -120,12 +124,13 @@
   const SHEET_ID = "1kZqoldvudEdciv_m4jmbOgX6klykcNSf_jARm0mQA2w";
   const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1&_=${Date.now()}`;
 
-  const TIER_ORDER = { 'Buy First': 1, 'Best Buy Now': 2, 'Buy': 3 };
+  const TIER_ORDER = { 'Buy First': 1, 'Best Buy Now': 2, 'Buy': 3, 'Hold': 4 };
 
   function tierClass(tier) {
     if (tier === 'Buy First') return 'tier-1';
     if (tier === 'Best Buy Now') return 'tier-2';
     if (tier === 'Buy') return 'tier-3';
+    if (tier === 'Hold') return 'tier-4';
     return '';
   }
   function logoUrl(ticker) {
@@ -134,6 +139,10 @@
   function fmt(n) {
     if (n === '' || n == null || isNaN(n)) return '—';
     return Math.abs(n) < 10 && n % 1 !== 0 ? Number(n).toFixed(2) : Number(n).toFixed(1);
+  }
+  function fmtCurrency(n) {
+    if (n === '' || n == null || isNaN(n)) return '—';
+    return '$' + Number(n).toFixed(2);
   }
   function parseCSV(text) {
     const rows = []; let cur = [], field = '', inQ = false;
@@ -192,27 +201,28 @@
 
       const tdCompany = document.createElement('td');
       tdCompany.className = 'company-cell';
-      tdCompany.textContent = r.company;
-      tr.appendChild(tdCompany);
-
-      const tdTicker = document.createElement('td');
-      tdTicker.className = 'ticker-cell';
       const img = document.createElement('img');
       img.className = 'logo';
       img.src = logoUrl(r.ticker);
       img.alt = '';
       img.onerror = function() { this.style.display = 'none'; };
-      tdTicker.appendChild(img);
-      const tickerSpan = document.createElement('span');
-      tickerSpan.textContent = r.ticker;
-      tdTicker.appendChild(tickerSpan);
+      tdCompany.appendChild(img);
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = r.company;
+      tdCompany.appendChild(nameSpan);
+      tr.appendChild(tdCompany);
+
+      const tdTicker = document.createElement('td');
+      tdTicker.className = 'ticker-cell';
+      tdTicker.textContent = r.ticker;
       tr.appendChild(tdTicker);
 
       const tdTier = document.createElement('td');
       tdTier.className = 'tier-cell';
       if (r.tier) {
         const badge = document.createElement('span');
-        badge.className = 'tier-badge ' + tierClass(r.tier);
+        const cls = tierClass(r.tier);
+        badge.className = 'tier-badge' + (cls ? ' ' + cls : '');
         badge.textContent = r.tier;
         tdTier.appendChild(badge);
       }
@@ -223,11 +233,18 @@
       tdStrategy.textContent = r.strategy || '';
       tr.appendChild(tdStrategy);
 
+      const tdBuyBelow = document.createElement('td');
+      tdBuyBelow.className = 'buy-below-cell';
+      tdBuyBelow.textContent = fmtCurrency(r.buyBelow);
+      tr.appendChild(tdBuyBelow);
+
       const numericKeys = ['yield', 'eps', 'fcf', 'div', 'rev', 'eps5'];
       const sparkbarKeys = ['div', 'rev', 'eps5'];
+      const headlineKeys = ['yield', 'div'];
       for (const key of numericKeys) {
         const v = r[key];
         const td = document.createElement('td');
+        if (headlineKeys.includes(key)) td.classList.add('metric-headline');
         td.textContent = fmt(v);
         if (sparkbarKeys.includes(key) && !isNaN(v)) {
           td.classList.add('has-spark');
@@ -264,7 +281,6 @@
       const parsed = parseCSV(text);
       if (parsed.length === 0) throw new Error('Empty CSV');
 
-      // Auto-detect column positions by header name (robust to reordering)
       const headers = parsed[0].map(h => (h || '').trim().toLowerCase());
       const findCol = (...keywords) => {
         for (const kw of keywords) {
@@ -278,6 +294,7 @@
         ticker: findCol('ticker'),
         tier: findCol('tier'),
         strategy: findCol('strategy'),
+        buyBelow: findCol('buy below'),
         yield: findCol('yield'),
         eps: findCol('eps payout'),
         fcf: findCol('fcf payout'),
@@ -293,6 +310,7 @@
           ticker: r[COL.ticker] || '',
           tier: r[COL.tier] || '',
           strategy: r[COL.strategy] || '',
+          buyBelow: COL.buyBelow !== -1 ? parseFloat(String(r[COL.buyBelow]).replace(/[$,]/g, '')) : NaN,
           yield: parseFloat(r[COL.yield]),
           eps: parseFloat(r[COL.eps]),
           fcf: parseFloat(r[COL.fcf]),
