@@ -26,7 +26,7 @@
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--ink); font-family: 'Newsreader', Georgia, serif; font-size: 18px; line-height: 1.65; font-feature-settings: 'kern' 1, 'liga' 1; }
-  .wrap { max-width: 1380px; margin: 0 auto; padding: 56px 56px 80px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 56px 56px 80px; }
   h1.title { font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'wght' 500; font-size: clamp(48px, 6.5vw, 76px); line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 18px; color: var(--ink); max-width: 880px; }
   h1.title em { font-style: italic; font-variation-settings: 'opsz' 144, 'wght' 400; color: var(--forest); }
   .deck { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 24; font-size: 21px; line-height: 1.5; color: var(--ink-2); max-width: 720px; margin: 0 0 12px; }
@@ -41,7 +41,7 @@
     h1.title { font-size: clamp(36px, 9vw, 48px); }
     .deck { font-size: 17px; }
     .meta-row { gap: 12px; font-size: 10px; }
-    table { min-width: 1280px; }
+    table { min-width: 980px; }
     th, td { padding: 12px 10px; font-size: 13px; }
     td.company-cell { font-size: 14px; }
   }
@@ -58,8 +58,7 @@
   tbody tr:hover { background: rgba(0, 88, 58, 0.025); }
   tbody tr:last-child { border-bottom: none; }
   td { padding: 16px 12px; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; vertical-align: middle; }
-  td.tier-cell { text-align: left; padding-right: 8px; }
-  td.strategy-cell { text-align: left; padding-right: 8px; }
+  td.tier-cell, td.strategy-cell, td.safety-cell { text-align: left; padding-right: 8px; }
   td.company-cell { text-align: left; font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
   td.company-cell .logo { width: 24px; height: 24px; vertical-align: middle; margin-right: 10px; border-radius: 4px; object-fit: contain; background: var(--rule-soft); }
   td.ticker-cell { text-align: left; font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; color: var(--copper); letter-spacing: 0.06em; white-space: nowrap; }
@@ -75,6 +74,12 @@
   .strategy-badge.strat-1 { background: var(--forest-soft); color: var(--forest); }
   .strategy-badge.strat-2 { background: var(--copper-soft); color: var(--copper); }
   .strategy-badge.strat-3 { background: var(--slate-soft); color: var(--slate); }
+  .safety-badge { background: var(--rule-soft); color: var(--ink-2); }
+  .safety-badge.safe-1 { background: #c9e0d4; color: #00583a; }
+  .safety-badge.safe-2 { background: #e1e8c9; color: #5a6b1c; }
+  .safety-badge.safe-3 { background: #f4e8c8; color: #8b6c1c; }
+  .safety-badge.safe-4 { background: #f1d7b3; color: #b8732e; }
+  .safety-badge.safe-5 { background: #f0d6d6; color: #a02828; }
   .state-msg { padding: 60px 24px; text-align: center; font-family: 'Newsreader', serif; font-style: italic; font-size: 16px; color: var(--ink-soft); }
   .state-msg.error { color: var(--copper); }
   .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--forest-soft); border-top-color: var(--forest); border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; vertical-align: middle; }
@@ -106,11 +111,7 @@
           <th data-sort="currentPrice">Current Price <span class="arrow">↕</span></th>
           <th data-sort="buyBelow">Buy Below <span class="arrow">↕</span></th>
           <th data-sort="yield">Yield % <span class="arrow">↕</span></th>
-          <th data-sort="eps">EPS Payout % <span class="arrow">↕</span></th>
-          <th data-sort="fcf">FCF Payout % <span class="arrow">↕</span></th>
-          <th data-sort="div">Div Growth 5Y <span class="arrow">↕</span></th>
-          <th data-sort="rev">Rev Growth 5Y <span class="arrow">↕</span></th>
-          <th data-sort="eps5">EPS Growth 5Y <span class="arrow">↕</span></th>
+          <th class="left" data-sort="safety">Safety Score <span class="arrow">↕</span></th>
         </tr>
       </thead>
       <tbody id="tb"></tbody>
@@ -125,6 +126,7 @@
   const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Sheet1&_=${Date.now()}`;
 
   const TIER_ORDER = { 'Buy First': 1, 'Best Buy Now': 2, 'Buy': 3, 'Hold': 4 };
+  const SAFETY_ORDER = { 'Very Safe': 1, 'Safe': 2, 'Borderline': 3, 'At Risk': 4, 'Cut Likely': 5 };
 
   function tierClass(tier) {
     if (tier === 'Buy First') return 'tier-1';
@@ -138,6 +140,15 @@
     if (s === 'dividend growth') return 'strat-1';
     if (s === 'high yield') return 'strat-2';
     if (s === 'compounders' || s === 'compounder') return 'strat-3';
+    return '';
+  }
+  function safetyClass(score) {
+    const s = (score || '').toLowerCase().trim();
+    if (s === 'very safe') return 'safe-1';
+    if (s === 'safe') return 'safe-2';
+    if (s === 'borderline') return 'safe-3';
+    if (s === 'at risk') return 'safe-4';
+    if (s === 'cut likely') return 'safe-5';
     return '';
   }
   function logoUrl(ticker) {
@@ -182,6 +193,11 @@
         if (sortKey === 'tier') {
           va = TIER_ORDER[va] || 99;
           vb = TIER_ORDER[vb] || 99;
+          return sortDir === 'asc' ? va - vb : vb - va;
+        }
+        if (sortKey === 'safety') {
+          va = SAFETY_ORDER[va] || 99;
+          vb = SAFETY_ORDER[vb] || 99;
           return sortDir === 'asc' ? va - vb : vb - va;
         }
         if (typeof va === 'string' || typeof vb === 'string') {
@@ -256,15 +272,21 @@
       tdBuyBelow.textContent = fmtCurrency(r.buyBelow);
       tr.appendChild(tdBuyBelow);
 
-      const numericKeys = ['yield', 'eps', 'fcf', 'div', 'rev', 'eps5'];
-      const headlineKeys = ['yield', 'div'];
-      for (const key of numericKeys) {
-        const v = r[key];
-        const td = document.createElement('td');
-        if (headlineKeys.includes(key)) td.classList.add('metric-headline');
-        td.textContent = fmtPct(v);
-        tr.appendChild(td);
+      const tdYield = document.createElement('td');
+      tdYield.className = 'metric-headline';
+      tdYield.textContent = fmtPct(r.yield);
+      tr.appendChild(tdYield);
+
+      const tdSafety = document.createElement('td');
+      tdSafety.className = 'safety-cell';
+      if (r.safety) {
+        const badge = document.createElement('span');
+        const cls = safetyClass(r.safety);
+        badge.className = 'pill safety-badge' + (cls ? ' ' + cls : '');
+        badge.textContent = r.safety;
+        tdSafety.appendChild(badge);
       }
+      tr.appendChild(tdSafety);
 
       tb.appendChild(tr);
     }
@@ -305,11 +327,7 @@
         currentPrice: findCol('current price'),
         buyBelow: findCol('buy below'),
         yield: findCol('yield'),
-        eps: findCol('eps payout'),
-        fcf: findCol('fcf payout'),
-        div: findCol('div growth'),
-        rev: findCol('rev growth'),
-        eps5: findCol('eps growth')
+        safety: findCol('safety')
       };
 
       const numFromCell = (v) => {
@@ -327,11 +345,7 @@
           currentPrice: COL.currentPrice !== -1 ? numFromCell(r[COL.currentPrice]) : NaN,
           buyBelow: COL.buyBelow !== -1 ? numFromCell(r[COL.buyBelow]) : NaN,
           yield: parseFloat(r[COL.yield]),
-          eps: parseFloat(r[COL.eps]),
-          fcf: parseFloat(r[COL.fcf]),
-          div: parseFloat(r[COL.div]),
-          rev: parseFloat(r[COL.rev]),
-          eps5: parseFloat(r[COL.eps5])
+          safety: COL.safety !== -1 ? (r[COL.safety] || '').trim() : ''
         }));
 
       document.getElementById('updated').textContent = 'Updated ' + new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
