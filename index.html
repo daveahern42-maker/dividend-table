@@ -149,8 +149,16 @@
     if (s === 'cut likely') return 'safe-5';
     return '';
   }
+  const LOGO_FALLBACKS = {
+    'LVMH.F': 'lvmh.com'
+    // add more ticker → domain mappings here if needed
+  };
   function logoUrl(ticker) {
     return `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
+  }
+  function logoFallbackUrl(ticker) {
+    const domain = LOGO_FALLBACKS[ticker];
+    return domain ? `https://logo.clearbit.com/${domain}` : null;
   }
   function fmtPct(n) {
     if (n === '' || n == null || isNaN(n)) return '—';
@@ -226,7 +234,15 @@
       img.className = 'logo';
       img.src = logoUrl(r.ticker);
       img.alt = '';
-      img.onerror = function() { this.style.display = 'none'; };
+      img.onerror = function() {
+        const fb = logoFallbackUrl(r.ticker);
+        if (fb && this.src !== fb) {
+          this.onerror = function() { this.style.display = 'none'; };
+          this.src = fb;
+        } else {
+          this.style.display = 'none';
+        }
+      };
       tdCompany.appendChild(img);
       const nameSpan = document.createElement('span');
       nameSpan.textContent = r.company;
@@ -330,7 +346,8 @@
 
       const numFromCell = (v) => {
         if (v == null || v === '') return NaN;
-        return parseFloat(String(v).replace(/[$,]/g, ''));
+        const cleaned = String(v).replace(/[ \s$,']/g, '');
+        return parseFloat(cleaned);
       };
 
       ROWS = parsed.slice(1)
