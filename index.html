@@ -154,6 +154,10 @@
     // add more ticker → domain mappings here if needed
   };
   function logoUrl(ticker) {
+    // For tickers FMP doesn't have, go straight to Google favicon
+    if (LOGO_FALLBACKS[ticker]) {
+      return `https://www.google.com/s2/favicons?domain=${LOGO_FALLBACKS[ticker]}&sz=128`;
+    }
     return `https://financialmodelingprep.com/image-stock/${encodeURIComponent(ticker)}.png`;
   }
   function logoFallbackUrl(ticker) {
